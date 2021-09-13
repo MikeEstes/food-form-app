@@ -13,7 +13,7 @@ export default AppStack = () => (
         name="FoodForm"
         component={FoodForm}
         options={{
-          title: 'Cheetah Coding',
+          title: 'Food Form App',
           headerTintColor: 'orange',
           headerStyle: {
             backgroundColor: 'black',

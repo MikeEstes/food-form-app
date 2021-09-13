@@ -1,64 +1,49 @@
 // Import Dependencies
-import React, { Component } from 'react';
+import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { ListItem, Icon } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteFood } from './actions/food';
 
 // Create component
-class FoodList extends Component {
-  static navigationOptions = {
-    title: 'Food list',
-    headerTintColor: 'white',
-    headerStyle: {
-      backgroundColor: 'green',
-    },
-  };
+const FoodList = () => {
+  const dispatch = useDispatch();
 
-  render() {
-    console.log(this.props.navigation.getParam('deleteFood'));
-    return (
-      <FlatList
-        style={styles.listContainer}
-        data={this.props.navigation.getParam('foodList')}
-        keyExtractor={(item, index) > item.key.toString()}
-        renderItem={data => (
-          <ListItem
-            title={data.item.name}
-            bottomDivider
-            rightIcon={
-              <Icon
-                name="delete"
-                size={36}
-                onPress={() =>
-                  this.props.navigation.getParam('deleteFood')(data.item.key)
-                }
-              />
-            }
-          />
-        )}
-      />
-    );
-  }
-}
+  const deleteCurrent = key => dispatch(deleteFood(key));
+  const foods = useSelector(state => state.foodReducer.foodList);
+
+  return (
+    <FlatList
+      style={styles.listContainer}
+      data={foods}
+      keyExtractor={(item, index) => item.key.toString()}
+      renderItem={data => (
+        <ListItem
+          title={data.item.name}
+          bottomDivider
+          rightIcon={
+            <Icon
+              name="delete"
+              size={36}
+              onPress={() => {
+                deleteCurrent(data.item.key);
+              }}
+            />
+          }
+        />
+      )}
+    />
+  );
+};
 
 // Create Stylesheet
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
+  listContainer: {
+    backgroundColor: '#212121',
+    padding: 16,
   },
-  title: {
-    fontSize: 64,
-    marginBottom: 48,
-  },
-  foodInput: {
-    fontSize: 32,
-    marginBottom: 32,
-    borderWidth: 1,
-    padding: 8,
-    width: '80%',
-    borderRadius: 10,
+  listText: {
+    fontSize: 30,
   },
 });
 

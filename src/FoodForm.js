@@ -1,89 +1,78 @@
 // Import Dependencies
-import React, { Component } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addFood } from './actions/food';
 
 // Create component
-class FoodForm extends Component {
-  static navigationOptions = {
-    title: 'Home',
-    headerTintColor: 'white',
-    headerStyle: {
-      backgroundColor: 'blue',
-    },
-  };
+const FoodForm = () => {
+  const [food, setFood] = useState('');
+  const dispatch = useDispatch();
 
-  state = {
-    food: null,
-    foodList: [],
-  };
+  const submitFood = food => dispatch(addFood(food));
 
-  submitFood = food => {
-    this.setState({
-      foodList: [
-        ...this.state.foodList,
-        {
-          key: Math.random(),
-          name: food,
-        },
-      ],
-    });
-  };
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Redux</Text>
+      <TextInput
+        value={food}
+        placeholder="Name"
+        style={styles.foodInput}
+        onChangeText={food => setFood(food)}
+      />
 
-  deleteFood = key => {
-    this.setState({
-      foodList: [...this.state.foodList.filter(item => item.key !== key)],
-    });
-  };
+      <TouchableOpacity
+        onPress={() => {
+          submitFood(food);
+          setFood('');
+        }}>
+        <Text style={styles.submitText}>Submit Food</Text>
+      </TouchableOpacity>
 
-  render() {
-    console.log(this.state.foodList);
-    return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Redux</Text>
-        <TextInput
-          value={this.state.food}
-          placeholder="Name"
-          style={styles.foodInput}
-          onChangeText={food => this.setState({ food })}
-        />
-        <Button
-          title="Submit"
-          color="black"
-          onPress={() => this.submitFood(this.state.food)}
-        />
-        <Button
-          title="Go to Food List"
-          onPress={() =>
-            this.props.navigation.navigate('FoodList', {
-              foodList: this.state.foodList,
-              deleteFood: this.deleteFood,
-            })
-          }
-        />
-      </View>
-    );
-  }
-}
+      <TouchableOpacity
+        onPress={() => this.props.navigation.navigate('FoodList')}>
+        <Text style={styles.foodListText}>Go to Food List</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 // Create Stylesheet
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 16,
+    backgroundColor: '#212121',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    fontSize: 64,
-    marginBottom: 48,
+    fontSize: 48,
+    marginBottom: 30,
+    marginTop: 16,
+    color: 'white',
   },
   foodInput: {
-    fontSize: 32,
+    fontSize: 24,
     marginBottom: 32,
     borderWidth: 1,
-    padding: 8,
+    padding: 12,
     width: '80%',
     borderRadius: 10,
+    backgroundColor: 'white',
+  },
+  submitText: {
+    fontSize: 22,
+    color: '#5fc9f8',
+  },
+  foodListText: {
+    fontSize: 22,
+    color: 'white',
   },
 });
 
