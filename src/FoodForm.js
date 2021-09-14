@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { addFood } from './actions/food';
 
 // Create component
-const FoodForm = () => {
+const FoodForm = ({ navigation }) => {
   const [food, setFood] = useState('');
   const dispatch = useDispatch();
 
@@ -35,8 +35,7 @@ const FoodForm = () => {
         <Text style={styles.submitText}>Submit Food</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => this.props.navigation.navigate('FoodList')}>
+      <TouchableOpacity onPress={() => navigation.navigate('FoodList')}>
         <Text style={styles.foodListText}>Go to Food List</Text>
       </TouchableOpacity>
     </View>

@@ -18,19 +18,17 @@ const FoodList = () => {
       data={foods}
       keyExtractor={(item, index) => item.key.toString()}
       renderItem={data => (
-        <ListItem
-          title={data.item.name}
-          bottomDivider
-          rightIcon={
-            <Icon
-              name="delete"
-              size={36}
-              onPress={() => {
-                deleteCurrent(data.item.key);
-              }}
-            />
-          }
-        />
+        <ListItem bottomDivider>
+          <ListItem.Content>
+            <ListItem.Title>{data.item.name}</ListItem.Title>
+          </ListItem.Content>
+          <Icon
+            name="trash"
+            type="font-awesome"
+            size={36}
+            onPress={() => deleteCurrent(data.item.key)}
+          />
+        </ListItem>
       )}
     />
   );
@@ -41,9 +39,6 @@ const styles = StyleSheet.create({
   listContainer: {
     backgroundColor: '#212121',
     padding: 16,
-  },
-  listText: {
-    fontSize: 30,
   },
 });
 
